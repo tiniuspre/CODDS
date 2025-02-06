@@ -1,0 +1,27 @@
+name: docker
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  verify:
+    name: Verify Dockerfile
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Create files
+        run: |
+          cp .env.example .env
+          cp certs/priv.key.example certs/priv.key
+          cp certs/pub.crt.example certs/pub.crt
+
+      - name: Verify Dockerfile
+        run: docker compose config
+      - name: Verify Dockerfile
+        run: docker compose build

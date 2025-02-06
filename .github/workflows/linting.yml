@@ -1,0 +1,31 @@
+name: Ruff
+on: [ push, pull_request ]
+jobs:
+  ruff:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+
+      - name: Run ruff
+        run: |
+          python -m ruff check
+
+      - name: Check ruff format
+        run: |
+          python -m ruff format --check
+
+      - name: Verify migrations
+        run: |
+          python manage.py makemigrations --check --dry-run --noinput -v 2
+          python manage.py migrate --noinput
