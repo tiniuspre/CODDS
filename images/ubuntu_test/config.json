@@ -1,0 +1,26 @@
+{
+  "info": {
+    "challenge_name": "Ubuntu web ssh",
+    "challenge_description": "This is a test challenge",
+    "challenge_pin": "24682468",
+    "connection_type": "ssh",
+    "connection_port": 80,
+    "username": "bruker",
+    "password": "hemmelig"
+  },
+  "processes": {
+    "ubuntu": {
+      "dockerfile": "Dockerfile",
+      "environment": {
+        "flag": "CTF{test_flag}",
+        "SSH_PASSWORD": "hemmelig"
+      },
+  "exposed_ports": [
+    {
+      "port": 80,
+      "protocol": "tcp"
+    }
+  ]
+    }
+  }
+}

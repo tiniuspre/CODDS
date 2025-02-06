@@ -1,0 +1,9 @@
+.venv
+.idea
+__pycache__
+.env
+*.pyc
+*.sqlite3
+*.crt
+*.key
+.DS_Store

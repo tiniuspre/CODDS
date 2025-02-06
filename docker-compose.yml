@@ -1,0 +1,55 @@
+services:
+  traefik:
+    image: traefik:v2.10
+    container_name: traefik
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--providers.file.directory=/etc/traefik/dynamic"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--entrypoints.ssh.address=:2222"
+
+    ports:
+      - "80:80"
+      - "443:443"       # HTTPS
+      - "8080:8080"     # Traefik dashboard (for debugging only)
+      - "2222:2222"
+
+    volumes:
+      # Docker socket so Traefik can watch containers' labels
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
+      # Mount the directory with your TLS config file(s)
+      - ./traefik_config:/etc/traefik/dynamic:ro
+
+      # Mount the directory containing your actual cert & key
+      - ./certs:/etc/traefik/certs:ro
+
+  web:
+    build: .
+    container_name: django_app
+    command: >
+      bash -c "
+        python manage.py migrate --noinput &&
+        python manage.py collectstatic --noinput &&
+        gunicorn codds.wsgi:application --bind 0.0.0.0:8000
+      "
+    expose:
+      - "8000"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.ctf_app.rule=Host(`backend-ctf.tinius.dev`)"
+      - "traefik.http.routers.ctf_app.entrypoints=websecure"
+      - "traefik.http.routers.ctf_app.tls=true"
+
+      - "traefik.http.services.ctf_app.loadbalancer.server.port=8000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - static_volume:/app/web/staticfiles
+    env_file:
+        - .env
+
+volumes:
+  static_volume:
