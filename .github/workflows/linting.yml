@@ -27,6 +27,5 @@ jobs:
 
       - name: Verify migrations
         run: |
-          python manage.py makemigrations --noinput
-          python manage.py makemigrations --check --dry-run --noinput --verbosity
+          python manage.py makemigrations --check --dry-run --noinput -v 2
           python manage.py migrate --noinput
