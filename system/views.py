@@ -14,7 +14,7 @@ from django.shortcuts import get_object_or_404
 from system.models import UserContainer
 from codds.settings import MANAGER_HANDLER
 from docker_manager import DockerManager
-from system.dockermanager_exeptions import InvalidPinException
+from system.dockermanager_exeptions import InvalidPinExceptionError
 
 
 def md5(data: str) -> str:
@@ -94,7 +94,7 @@ class ImageView(APIView):
         ).save()
         try:
             manager.spawn(identifier, pin_code=request.data.get('pin'))
-        except InvalidPinException:
+        except InvalidPinExceptionError:
             return Response(status=status.HTTP_400_BAD_REQUEST, data={'error': 'Invalid pin code'})
 
         return Response(status=status.HTTP_201_CREATED, data=manager.get_container(identifier).__dict__())

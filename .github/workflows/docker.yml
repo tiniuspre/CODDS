@@ -15,6 +15,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Create files
+        run: |
+          cp .env.example .env
+          cp certs/priv.key.example certs/priv.key
+          cp certs/pub.crt.example certs/pub.crt
+
       - name: Verify Dockerfile
         run: docker compose config
       - name: Verify Dockerfile

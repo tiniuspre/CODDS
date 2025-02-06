@@ -8,7 +8,7 @@ from docker.models.containers import Container
 
 from codds import settings
 from images.program_handler import PROGRAM_HANDLER_BASE_DIR, Process, Challenge, ImageHandler
-from system.dockermanager_exeptions import InvalidPinException
+from system.dockermanager_exeptions import InvalidPinExceptionError
 
 docker_client = docker.from_env()
 
@@ -112,7 +112,7 @@ class ContainerGroup:
 
     def start(self) -> None:
         if self.challenge.info.challenge_pin is not None and self.pin != self.challenge.info.challenge_pin:
-            raise InvalidPinException('Invalid Pin')
+            raise InvalidPinExceptionError('Invalid Pin')
         for process in self.processes.values():
             process.run()
             self.challenge.info.set_container_id(process.container_id)
