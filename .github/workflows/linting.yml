@@ -19,11 +19,11 @@ jobs:
 
       - name: Run ruff
         run: |
-          python -m ruff .
+          python -m ruff
 
       - name: Check ruff format
         run: |
-          python -m ruff format --check .
+          python -m ruff format --check
 
       - name: Verify migrations
         run: |
