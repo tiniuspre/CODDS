@@ -11,3 +11,4 @@ requests==2.31.0
 sqlparse==0.5.3
 urllib3==2.3.0
 gunicorn==23.0.0
+ruff==0.9.4

@@ -1,6 +1,8 @@
+from __future__ import annotations
+
 from django.urls import path
 
-from admin_app.views import ChallengesView, ContainersView, UsersAdminView, UserAdminView, ContainersByUserView, ContainerByUserView
+from admin_app.views import UserAdminView, ChallengesView, ContainersView, UsersAdminView, ContainerByUserView, ContainersByUserView
 
 urlpatterns = [
     path('container/', ChallengesView.as_view()),
@@ -9,5 +11,4 @@ urlpatterns = [
     path('user/', UsersAdminView.as_view()),
     path('user/<user_id>/', UserAdminView.as_view()),
     path('user/<user_id>/containers/', ContainersByUserView.as_view()),
-
 ]

@@ -9,11 +9,14 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
+
+from __future__ import annotations
+
 import os
 from pathlib import Path
 
-from images.program_handler import ImageHandler
 from docker_manager import ManagerHandler
+from images.program_handler import ImageHandler
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,7 +29,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-#^_!' + os.urandom(64).hex())
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = int(os.getenv('DEBUG', 0)) == 1
+DEBUG = int(os.getenv('DEBUG', '0')) == 1
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost').split(',')
 
@@ -41,9 +44,9 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 _http_protocol = os.getenv('HTTP_PROTOCOL', 'https')
 
-FRONTEND_URL = f"{_http_protocol}://{os.getenv('FRONTEND_DOMAIN', 'localhost')}"
+FRONTEND_URL = f'{_http_protocol}://{os.getenv("FRONTEND_DOMAIN", "localhost")}'
 BACKEND_IP_OR_DOMAIN = os.getenv('BACKEND_DOMAIN', 'localhost')
-BACKEND_URL = f"{_http_protocol}://{BACKEND_IP_OR_DOMAIN}"
+BACKEND_URL = f'{_http_protocol}://{BACKEND_IP_OR_DOMAIN}'
 
 
 INSTALLED_APPS = [
@@ -76,10 +79,7 @@ ROOT_URLCONF = 'codds.urls'
 AUTH_USER_MODEL = 'accounts.User'
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',
-        'rest_framework.authentication.SessionAuthentication'
-    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': ['rest_framework.authentication.TokenAuthentication', 'rest_framework.authentication.SessionAuthentication'],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
     ],
@@ -89,8 +89,7 @@ REST_FRAMEWORK = {
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates']
-        ,
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -157,10 +156,8 @@ DISCORD_REDIRECT_URI = f'{BACKEND_URL}/accounts/discord/'
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / "staticfiles"
-STATICFILES_DIRS = [
-    (BASE_DIR / 'static')
-]
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_DIRS = [(BASE_DIR / 'static')]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
