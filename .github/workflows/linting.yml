@@ -19,7 +19,7 @@ jobs:
 
       - name: Run ruff
         run: |
-          python -m ruff
+          python -m ruff check
 
       - name: Check ruff format
         run: |
